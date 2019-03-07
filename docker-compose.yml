@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  # Hub
+  node-hub:
+    image: selenium/hub
+    environment:
+      - GRID_NEW_SESSION_WAIT_TIMEOUT=600000
+    privileged: true
+    cap_add:
+      - "SYS_ADMIN"
+    domainname: localhost
+    hostname: node-hub
+    ports:
+      - "4444:4444"
+    tty: true
+
+  # Nodei 1
+  node-chrome-1:
+    image: selenium/node-chrome
+    environment:
+      - HUB_ENV_GRID_BROWSER_TIMEOUT=16000
+      - HUB_ENV_GRID_TIMEOUT=19000
+      - HUB_HOST=node-hub
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=1
+      - NODE_MAX_SESSION=1
+      - NODE_POLLING=98000
+      - NODE_REGISTER_CYCLE=80000
+      - NODE_UNREGISTER_IF_STILL_DOWN_AFTER=2500
+      - SE_OPTS=-timeout 19000 -browserTimeout 16000 -id node-chrome-1
+    depends_on:
+      - node-hub
+    links:
+      - node-hub:hub
+    tty: true
+
+  # Node 2
+  node-chrome-2:
+    image: selenium/node-chrome
+    environment:
+      - HUB_ENV_GRID_BROWSER_TIMEOUT=16000
+      - HUB_ENV_GRID_TIMEOUT=19000
+      - HUB_HOST=node-hub
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=1
+      - NODE_MAX_SESSION=1
+      - NODE_POLLING=98000
+      - NODE_REGISTER_CYCLE=80000
+      - NODE_UNREGISTER_IF_STILL_DOWN_AFTER=2500
+      - SE_OPTS=-timeout 19000 -browserTimeout 16000 -id node-chrome-2
+    depends_on:
+      - node-hub
+    links:
+      - node-hub:hub
+    tty: true
+
