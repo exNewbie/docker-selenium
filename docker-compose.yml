@@ -15,7 +15,7 @@ services:
       - "4444:4444"
     tty: true
 
-  # Nodei 1
+  # Node 1
   node-chrome-1:
     image: selenium/node-chrome
     environment:
@@ -34,6 +34,8 @@ services:
     links:
       - node-hub:hub
     tty: true
+    volumes:
+      - /dev/shm:/dev/shm
 
   # Node 2
   node-chrome-2:
@@ -54,4 +56,5 @@ services:
     links:
       - node-hub:hub
     tty: true
-
+    volumes:
+      - /dev/shm:/dev/shm
